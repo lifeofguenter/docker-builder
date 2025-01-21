@@ -13,6 +13,8 @@ ifneq (,$(findstring refs/heads/,$(GITHUB_REF)))
 	GIT_BRANCH := $(GITHUB_REF:refs/heads/%=%)
 else ifneq (,$(findstring refs/tags/,$(GITHUB_REF)))
 	TAG_NAME := $(GITHUB_REF:refs/tags/%=%)
+else ifneq (,$(findstring refs/pull/,$(GITHUB_REF)))
+	GIT_BRANCH := $(CI_COMMIT_REF_NAME)
 endif
 endif
 

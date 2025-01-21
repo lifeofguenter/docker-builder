@@ -25,6 +25,8 @@ RUN set -ex && \
       make \
       mysql-client \
       ncurses \
+      nodejs \
+      npm \
       openssh-client \
       pipx \
       python3-dev \
