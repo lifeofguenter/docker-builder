@@ -57,7 +57,9 @@ endif
 
 .PHONY: docker-login
 docker-login:
+ifneq ($(GITHUB_ACTOR),dependabot[bot])
 	$(call docker_login)
+endif
 
 
 define docker_login
