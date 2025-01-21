@@ -1,0 +1,7 @@
+.git/
+.idea/
+.editorconfig
+.gitignore
+Makefile
+LICENSE
+README.md
