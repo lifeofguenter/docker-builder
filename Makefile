@@ -40,7 +40,7 @@ build:
 
 .PHONY: test
 test:
-	docker run --rm --entrypoint munin-update '$(REPO_NAME)' --version
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'terraform version'
 
 
 .PHONY: publish
