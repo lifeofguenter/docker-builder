@@ -40,7 +40,7 @@ build:
 
 .PHONY: test
 test:
-	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'terraform version'
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'aws --version'
 
 
 .PHONY: publish
