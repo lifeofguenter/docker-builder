@@ -31,6 +31,7 @@ RUN set -ex && \
       pipx \
       python3-dev \
       py3-dnspython \
+      py3-netaddr \
       rsync \
       tree \
       wget \
