@@ -4,7 +4,8 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG tfenv_version="3.0.0"
 ARG tfdocs_version="0.19.0"
-ARG packer_version="1.11.2"
+ARG packer_version="1.12.0"
+ARG gcloud_version="512.0.0"
 
 ENV TFENV_AUTO_INSTALL="false" \
     AWS_METADATA_SERVICE_NUM_ATTEMPTS="5" \
@@ -63,6 +64,14 @@ RUN set -ex && \
     rm \
       "v${tfenv_version}.tar.gz" \
       packer_*.zip \
-      terraform-docs-*.tar.gz
+      terraform-docs-*.tar.gz \
+
+RUN set -ex && \
+    wget --no-verbose "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" && \
+    tar xf "google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" -C /opt && \
+    rm "google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" && \
+    gcloud config set core/disable_usage_reporting true && \
+    gcloud config set component_manager/disable_update_check true && \
+    gcloud components install app-engine-go
 
 COPY known_hosts /root/.ssh/known_hosts
