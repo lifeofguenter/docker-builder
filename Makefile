@@ -41,6 +41,7 @@ build:
 .PHONY: test
 test:
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'aws --version'
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'gcloud --version'
 
 
 .PHONY: publish
