@@ -64,7 +64,7 @@ RUN set -ex && \
     rm \
       "v${tfenv_version}.tar.gz" \
       packer_*.zip \
-      terraform-docs-*.tar.gz \
+      terraform-docs-*.tar.gz
 
 RUN set -ex && \
     wget --no-verbose "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" && \
