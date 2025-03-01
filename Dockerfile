@@ -10,7 +10,7 @@ ARG gcloud_version="512.0.0"
 ENV TFENV_AUTO_INSTALL="false" \
     AWS_METADATA_SERVICE_NUM_ATTEMPTS="5" \
     AWS_STS_REGIONAL_ENDPOINTS="regional" \
-    PATH="/root/.local/bin:${PATH}"
+    PATH="/root/.local/bin:/opt/google-cloud-sdk/bin:${PATH}"
 
 RUN set -ex && \
     apk add --no-progress --no-cache \
