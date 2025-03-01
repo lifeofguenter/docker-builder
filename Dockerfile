@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/docker:27
+FROM public.ecr.aws/docker/library/docker:28
 
 ARG TARGETOS
 ARG TARGETARCH
