@@ -18,7 +18,6 @@ RUN set -ex && \
       ansible-lint \
       aws-cli \
       bash \
-      b2-tools \
       ca-certificates \
       curl \
       docker-credential-ecr-login \
@@ -44,6 +43,7 @@ RUN set -ex && \
       /root/.ssh/
 
 RUN set -ex && \
+    pipx install b2 && \
     pipx install pre-commit && \
     pipx install --preinstall PyGithub python-gitlab terratalk
 
