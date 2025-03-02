@@ -43,6 +43,7 @@ RUN set -ex && \
       /root/.ssh/
 
 RUN set -ex && \
+    pipx install b2 && \
     pipx install pre-commit && \
     pipx install --preinstall PyGithub python-gitlab terratalk
 
