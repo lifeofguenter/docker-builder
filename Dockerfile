@@ -1,61 +1,92 @@
-FROM public.ecr.aws/docker/library/docker:28
+FROM public.ecr.aws/docker/library/debian:bookworm-slim
 
 ARG TARGETOS
 ARG TARGETARCH
+ARG DEBIAN_FRONTEND="noninteractive"
 ARG tfenv_version="3.0.0"
 ARG tfdocs_version="0.19.0"
 ARG packer_version="1.12.0"
-ARG gcloud_version="512.0.0"
-ARG mysql_version="8.0.40"
+ARG mysql_version="8.0.41"
 
 ENV TFENV_AUTO_INSTALL="false" \
     AWS_METADATA_SERVICE_NUM_ATTEMPTS="5" \
     AWS_STS_REGIONAL_ENDPOINTS="regional" \
-    PATH="/root/.local/bin:/opt/google-cloud-sdk/bin:/opt/mysql-${mysql_version}/bin:${PATH}"
+    PATH="/root/.local/bin:${PATH}"
+
+# Install docker-cli
+RUN set -ex && \
+    apt-get -qq update && \
+    apt-get -yqq install --no-install-recommends ca-certificates curl && \
+    install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && \
+    chmod a+r /etc/apt/keyrings/docker.asc && \
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get -qq update && \
+    apt-get -yqq install --no-install-recommends docker-ce-cli docker-buildx-plugin docker-compose-plugin && \
+    apt-get -qq clean && \
+    rm -rf /var/lib/apt/lists/*
+
 
 RUN set -ex && \
-    apk add --no-progress --no-cache \
+    apt-get -qq update && \
+    apt-get -yqq install --no-install-recommends \
       ansible \
       ansible-lint \
-      aws-cli \
+      amazon-ecr-credential-helper \
+      awscli \
+      backblaze-b2 \
       bash \
       ca-certificates \
       curl \
-      docker-credential-ecr-login \
-      gcompat \
       git \
+      gpg \
       jq \
       make \
-      ncurses \
+      ncurses-bin \
       nodejs \
       npm \
       openssh-client \
       pipx \
+      pre-commit \
       python3-dev \
-      py3-dnspython \
-      py3-netaddr \
+      python3-dnspython \
+      python3-netaddr \
       rsync \
       tree \
+      unzip \
       wget \
+      xz-utils \
       yamllint \
       zip && \
     mkdir -p \
       /root/.aws/ \
-      /root/.ssh/
+      /root/.ssh/ && \
+    apt-get -qq clean && \
+    rm -rf /var/lib/apt/lists/*
 
+# Install mysql
 RUN set -ex && \
-    mkdir -p \
-      "/opt/mysql-${mysql_version}/" && \
-    wget --no-verbose "https://downloads.mysql.com/archives/get/p/23/file/mysql-${mysql_version}-linux-glibc2.17-x86_64-minimal.tar.xz" && \
-    tar xf "mysql-${mysql_version}-linux-glibc2.17-x86_64-minimal.tar.xz" --strip-components=1 -C "/opt/mysql-${mysql_version}/" && \
-    rm "mysql-${mysql_version}-linux-glibc2.17-x86_64-minimal.tar.xz"
+    wget --no-verbose \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-client_8.0.41-1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-client-core_8.0.41-1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-client_8.0.41-1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-client-plugins_8.0.41-1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-common_8.0.41-1debian12_amd64.deb" && \
+    apt-get -qq update && \
+    apt-get install -yqq --no-install-recommends ./*.deb && \
+    rm -f ./*.deb && \
+    apt-get -qq clean && \
+    rm -rf /var/lib/apt/lists/*
 
+# Install terratalk
 RUN set -ex && \
-    pipx install b2 && \
-    pipx install pre-commit && \
-    pipx install --preinstall PyGithub python-gitlab terratalk
+    pipx install terratalk && \
+    pipx inject terratalk PyGithub python-gitlab
 
-# terraform via tfenv
+# Install terraform via tfenv + packer
 RUN set -ex && \
     cd /opt && \
     wget --no-verbose "https://github.com/tfutils/tfenv/archive/v${tfenv_version}.tar.gz" && \
@@ -78,12 +109,18 @@ RUN set -ex && \
 
 # gcloud
 RUN set -ex && \
-    wget --no-verbose "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" && \
-    tar xf "google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" -C /opt && \
-    rm "google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+      gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
+      tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    apt-get -qq update && \
+    apt-get -yqq install --no-install-recommends \
+      google-cloud-cli \
+      google-cloud-cli-app-engine-go && \
     gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
-    gcloud components install app-engine-go
+    apt-get -qq clean && \
+    rm -rf /var/lib/apt/lists/*
 
 
 COPY known_hosts /root/.ssh/known_hosts

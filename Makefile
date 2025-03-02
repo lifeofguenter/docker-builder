@@ -33,13 +33,21 @@ build:
 	@echo -e "🔨👷 $(bold)Building$(norm) 👷🔨"
 	docker build \
 		--pull \
+		--platform linux/amd64 \
 		-t '$(REPO_NAME)' \
 		.
 
 
 .PHONY: test
 test:
-	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'aws --version; gcloud --version; mysqldump --version'
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'aws --version'
+	@echo ""
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'gcloud --version'
+	@echo ""
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'mysqldump --version'
+	@echo ""
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'docker --version'
+	@echo ""
 
 
 .PHONY: publish
