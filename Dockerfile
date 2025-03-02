@@ -44,7 +44,7 @@ RUN set -ex && \
 
 RUN set -ex && \
     pipx install pre-commit && \
-    pipx install --preinstall python-gitlab terratalk
+    pipx install --preinstall PyGithub python-gitlab terratalk
 
 # terraform via tfenv
 RUN set -ex && \
