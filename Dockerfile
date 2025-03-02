@@ -18,6 +18,7 @@ RUN set -ex && \
       ansible-lint \
       aws-cli \
       bash \
+      b2-tools \
       ca-certificates \
       curl \
       docker-credential-ecr-login \
