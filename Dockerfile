@@ -37,7 +37,6 @@ RUN set -ex && \
       ansible-lint \
       amazon-ecr-credential-helper \
       awscli \
-      backblaze-b2 \
       bash \
       ca-certificates \
       curl \
@@ -83,6 +82,7 @@ RUN set -ex && \
 
 # Install terratalk
 RUN set -ex && \
+    pipx install b2 && \
     pipx install terratalk && \
     pipx inject terratalk PyGithub python-gitlab
 
