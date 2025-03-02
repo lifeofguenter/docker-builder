@@ -31,7 +31,6 @@ all:
 .PHONY: build
 build:
 	@echo -e "🔨👷 $(bold)Building$(norm) 👷🔨"
-	printenv
 	docker build \
 		--pull \
 		-t '$(REPO_NAME)' \
