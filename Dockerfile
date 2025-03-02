@@ -48,6 +48,7 @@ RUN set -ex && \
       nodejs \
       npm \
       openssh-client \
+      pigz \
       pipx \
       pre-commit \
       python3-dev \
