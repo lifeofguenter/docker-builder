@@ -6,11 +6,12 @@ ARG tfenv_version="3.0.0"
 ARG tfdocs_version="0.19.0"
 ARG packer_version="1.12.0"
 ARG gcloud_version="512.0.0"
+ARG mysql_version="8.0.40"
 
 ENV TFENV_AUTO_INSTALL="false" \
     AWS_METADATA_SERVICE_NUM_ATTEMPTS="5" \
     AWS_STS_REGIONAL_ENDPOINTS="regional" \
-    PATH="/root/.local/bin:/opt/google-cloud-sdk/bin:${PATH}"
+    PATH="/root/.local/bin:/opt/google-cloud-sdk/bin:/opt/mysql-${mysql_version}/bin:${PATH}"
 
 RUN set -ex && \
     apk add --no-progress --no-cache \
@@ -21,10 +22,10 @@ RUN set -ex && \
       ca-certificates \
       curl \
       docker-credential-ecr-login \
+      gcompat \
       git \
       jq \
       make \
-      mysql-client \
       ncurses \
       nodejs \
       npm \
@@ -41,6 +42,13 @@ RUN set -ex && \
     mkdir -p \
       /root/.aws/ \
       /root/.ssh/
+
+RUN set -ex && \
+    mkdir -p \
+      "/opt/mysql-${mysql_version}/" && \
+    wget --no-verbose "https://downloads.mysql.com/archives/get/p/23/file/mysql-${mysql_version}-linux-glibc2.17-x86_64-minimal.tar.xz" && \
+    tar xf "mysql-${mysql_version}-linux-glibc2.17-x86_64-minimal.tar.xz" --strip-components=1 -C "/opt/mysql-${mysql_version}/" && \
+    rm "mysql-${mysql_version}-linux-glibc2.17-x86_64-minimal.tar.xz"
 
 RUN set -ex && \
     pipx install b2 && \
@@ -68,6 +76,7 @@ RUN set -ex && \
       packer_*.zip \
       terraform-docs-*.tar.gz
 
+# gcloud
 RUN set -ex && \
     wget --no-verbose "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" && \
     tar xf "google-cloud-sdk-${gcloud_version}-linux-x86_64.tar.gz" -C /opt && \
@@ -75,5 +84,6 @@ RUN set -ex && \
     gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
     gcloud components install app-engine-go
+
 
 COPY known_hosts /root/.ssh/known_hosts
