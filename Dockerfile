@@ -52,8 +52,9 @@ RUN set -ex && \
     wget --no-verbose "https://github.com/tfutils/tfenv/archive/v${tfenv_version}.tar.gz" && \
     tar xf "v${tfenv_version}.tar.gz" && \
     ln -sf "/opt/tfenv-${tfenv_version}/bin/"* /usr/local/bin && \
-    tfenv list-remote | grep '^1\.10\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
     tfenv list-remote | grep '^1\.9\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.10\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.11\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
     wget --no-verbose "https://github.com/terraform-docs/terraform-docs/releases/download/v${tfdocs_version}/terraform-docs-v${tfdocs_version}-${TARGETOS}-${TARGETARCH}.tar.gz" && \
     wget --no-verbose "https://releases.hashicorp.com/packer/${packer_version}/packer_${packer_version}_${TARGETOS}_${TARGETARCH}.zip" && \
     tar xf terraform-docs-*.tar.gz && \
