@@ -33,8 +33,6 @@ RUN set -ex && \
 RUN set -ex && \
     apt-get -qq update && \
     apt-get -yqq install --no-install-recommends \
-      ansible \
-      ansible-lint \
       amazon-ecr-credential-helper \
       awscli \
       bash \
@@ -83,6 +81,8 @@ RUN set -ex && \
 
 # Install terratalk
 RUN set -ex && \
+    pipx install ansible && \
+    pipx install ansible-lint && \
     pipx install b2 && \
     pipx install terratalk && \
     pipx inject terratalk PyGithub python-gitlab
