@@ -44,7 +44,7 @@ test:
 	@echo -e "\n"
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'aws --version'
 	@echo -e "\n"
-	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'b2 --version'
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'b2 version'
 	@echo -e "\n"
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'gcloud --version'
 	@echo -e "\n"
