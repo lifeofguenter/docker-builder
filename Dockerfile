@@ -49,9 +49,6 @@ RUN set -ex && \
       pigz \
       pipx \
       pre-commit \
-      python3-dev \
-      python3-dnspython \
-      python3-netaddr \
       rsync \
       tree \
       unzip \
@@ -82,7 +79,7 @@ RUN set -ex && \
 # Install terratalk
 RUN set -ex && \
     pipx install ansible && \
-    pipx install ansible-lint && \
+    pipx inject --include-apps ansible ansible-core ansible-lint dnspython netaddr && \
     pipx install b2 && \
     pipx install terratalk && \
     pipx inject terratalk PyGithub python-gitlab
