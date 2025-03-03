@@ -49,6 +49,12 @@ RUN set -ex && \
       pigz \
       pipx \
       pre-commit \
+      python3-boto3 \
+      python3-dnspython \
+      python3-github \
+      python3-gitlab \
+      python3-netaddr \
+      python3-paramiko \
       rsync \
       tree \
       unzip \
@@ -78,11 +84,10 @@ RUN set -ex && \
 
 # Install terratalk
 RUN set -ex && \
-    pipx install ansible && \
-    pipx inject --include-apps ansible ansible-core ansible-lint dnspython netaddr && \
-    pipx install b2 && \
-    pipx install terratalk && \
-    pipx inject terratalk PyGithub python-gitlab
+    pipx install --system-site-packages ansible && \
+    pipx inject --system-site-packages --include-apps ansible ansible-core ansible-lint && \
+    pipx install --system-site-packages b2 && \
+    pipx install --system-site-packages terratalk
 
 # Install terraform via tfenv + packer
 RUN set -ex && \

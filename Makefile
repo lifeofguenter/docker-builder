@@ -41,15 +41,17 @@ build:
 .PHONY: test
 test:
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'ansible --version'
-	@echo ""
+	@echo -e "\n"
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'aws --version'
-	@echo ""
+	@echo -e "\n"
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'b2 --version'
+	@echo -e "\n"
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'gcloud --version'
-	@echo ""
+	@echo -e "\n"
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'mysqldump --version'
-	@echo ""
+	@echo -e "\n"
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'docker --version'
-	@echo ""
+	@echo -e "\n"
 
 
 .PHONY: publish
