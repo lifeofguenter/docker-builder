@@ -53,6 +53,7 @@ RUN set -ex && \
       python3-dnspython \
       python3-github \
       python3-gitlab \
+      python3-jinja2 \
       python3-netaddr \
       python3-paramiko \
       rsync \
