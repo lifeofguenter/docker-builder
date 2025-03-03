@@ -50,12 +50,18 @@ RUN set -ex && \
       pipx \
       pre-commit \
       python3-boto3 \
+      python3-cryptography \
+      python3-distutils \
       python3-dnspython \
       python3-github \
       python3-gitlab \
+      python3-httplib2 \
       python3-jinja2 \
       python3-netaddr \
+      python3-packaging \
       python3-paramiko \
+      python3-resolvelib \
+      python3-yaml \
       rsync \
       tree \
       unzip \
