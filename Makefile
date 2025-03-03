@@ -40,6 +40,8 @@ build:
 
 .PHONY: test
 test:
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'ansible --version'
+	@echo ""
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'aws --version'
 	@echo ""
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'gcloud --version'
