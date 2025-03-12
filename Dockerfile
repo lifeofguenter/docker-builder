@@ -59,6 +59,7 @@ RUN set -ex && \
       python3-jinja2 \
       python3-netaddr \
       python3-packaging \
+      python3-passlib \
       python3-paramiko \
       python3-resolvelib \
       python3-yaml \
