@@ -4,9 +4,9 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG tfenv_version="3.0.0"
-ARG tfdocs_version="0.19.0"
-ARG packer_version="1.12.0"
-ARG mysql_version="8.0.41"
+ARG tfdocs_version="0.20.0"
+ARG packer_version="1.14.2"
+ARG mysql_version="8.4.6"
 
 ENV TFENV_AUTO_INSTALL="false" \
     AWS_METADATA_SERVICE_NUM_ATTEMPTS="5" \
@@ -79,11 +79,11 @@ RUN set -ex && \
 # Install mysql
 RUN set -ex && \
     wget --no-verbose \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-client_8.0.41-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-client-core_8.0.41-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-client_8.0.41-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-client-plugins_8.0.41-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-common_8.0.41-1debian12_amd64.deb" && \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client_${mysql_version}-1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client-core_${mysql_version}-1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-client_${mysql_version}-1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client-plugins_${mysql_version}-1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-common_${mysql_version}-1debian12_amd64.deb" && \
     apt-get -qq update && \
     apt-get install -yqq --no-install-recommends ./*.deb && \
     rm -f ./*.deb && \
@@ -103,9 +103,9 @@ RUN set -ex && \
     wget --no-verbose "https://github.com/tfutils/tfenv/archive/v${tfenv_version}.tar.gz" && \
     tar xf "v${tfenv_version}.tar.gz" && \
     ln -sf "/opt/tfenv-${tfenv_version}/bin/"* /usr/local/bin && \
-    tfenv list-remote | grep '^1\.9\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
-    tfenv list-remote | grep '^1\.10\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
-    tfenv list-remote | grep '^1\.11\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.11\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.12\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.13\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
     wget --no-verbose "https://github.com/terraform-docs/terraform-docs/releases/download/v${tfdocs_version}/terraform-docs-v${tfdocs_version}-${TARGETOS}-${TARGETARCH}.tar.gz" && \
     wget --no-verbose "https://releases.hashicorp.com/packer/${packer_version}/packer_${packer_version}_${TARGETOS}_${TARGETARCH}.zip" && \
     tar xf terraform-docs-*.tar.gz && \
