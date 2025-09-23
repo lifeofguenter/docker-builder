@@ -81,7 +81,7 @@ RUN set -ex && \
     wget --no-verbose \
       "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client_${mysql_version}-1debian12_amd64.deb" \
       "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client-core_${mysql_version}-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-client_${mysql_version}1debian12_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-client_${mysql_version}-1debian12_amd64.deb" \
       "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client-plugins_${mysql_version}-1debian12_amd64.deb" \
       "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-common_${mysql_version}-1debian12_amd64.deb" && \
     apt-get -qq update && \
