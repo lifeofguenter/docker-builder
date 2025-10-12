@@ -34,6 +34,8 @@ RUN set -ex && \
     apt-get -qq update && \
     apt-get -yqq install --no-install-recommends \
       amazon-ecr-credential-helper \
+      ansible \
+      ansible-core \
       awscli \
       bash \
       ca-certificates \
@@ -92,8 +94,6 @@ RUN set -ex && \
 
 # Install terratalk
 RUN set -ex && \
-    pipx install --system-site-packages ansible && \
-    pipx inject --system-site-packages --include-apps ansible ansible-core ansible-lint && \
     pipx install --system-site-packages b2 && \
     pipx install --system-site-packages terratalk
 

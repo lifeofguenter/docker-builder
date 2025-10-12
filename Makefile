@@ -52,6 +52,8 @@ test:
 	@echo -e "\n"
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'docker --version'
 	@echo -e "\n"
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'node --version'
+	@echo -e "\n"
 
 
 .PHONY: publish
