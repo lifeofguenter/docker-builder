@@ -51,7 +51,6 @@ RUN set -ex && \
       pre-commit \
       python3-boto3 \
       python3-cryptography \
-      python3-distutils \
       python3-dnspython \
       python3-github \
       python3-gitlab \
@@ -62,6 +61,7 @@ RUN set -ex && \
       python3-passlib \
       python3-paramiko \
       python3-resolvelib \
+      python3-setuptools \
       python3-yaml \
       rsync \
       tree \
