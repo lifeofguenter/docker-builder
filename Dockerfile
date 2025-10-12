@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/debian:bookworm-slim
+FROM public.ecr.aws/docker/library/debian:trixie-slim
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -34,6 +34,8 @@ RUN set -ex && \
     apt-get -qq update && \
     apt-get -yqq install --no-install-recommends \
       amazon-ecr-credential-helper \
+      ansible \
+      ansible-core \
       awscli \
       bash \
       ca-certificates \
@@ -51,7 +53,6 @@ RUN set -ex && \
       pre-commit \
       python3-boto3 \
       python3-cryptography \
-      python3-distutils \
       python3-dnspython \
       python3-github \
       python3-gitlab \
@@ -62,6 +63,7 @@ RUN set -ex && \
       python3-passlib \
       python3-paramiko \
       python3-resolvelib \
+      python3-setuptools \
       python3-yaml \
       rsync \
       tree \
@@ -92,8 +94,6 @@ RUN set -ex && \
 
 # Install terratalk
 RUN set -ex && \
-    pipx install --system-site-packages ansible && \
-    pipx inject --system-site-packages --include-apps ansible ansible-core ansible-lint && \
     pipx install --system-site-packages b2 && \
     pipx install --system-site-packages terratalk
 
@@ -104,7 +104,7 @@ RUN set -ex && \
     tar xf "v${tfenv_version}.tar.gz" && \
     ln -sf "/opt/tfenv-${tfenv_version}/bin/"* /usr/local/bin && \
     tfenv list-remote | grep '^1\.11\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
-    tfenv list-remote | grep '^1\.12\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.12\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
     tfenv list-remote | grep '^1\.13\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
     wget --no-verbose "https://github.com/terraform-docs/terraform-docs/releases/download/v${tfdocs_version}/terraform-docs-v${tfdocs_version}-${TARGETOS}-${TARGETARCH}.tar.gz" && \
     wget --no-verbose "https://releases.hashicorp.com/packer/${packer_version}/packer_${packer_version}_${TARGETOS}_${TARGETARCH}.zip" && \
