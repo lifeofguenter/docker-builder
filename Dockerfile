@@ -36,6 +36,7 @@ RUN set -ex && \
       amazon-ecr-credential-helper \
       ansible \
       ansible-core \
+      ansible-lint \
       awscli \
       bash \
       ca-certificates \
