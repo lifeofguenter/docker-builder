@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ARG tfenv_version="3.0.0"
 ARG tfdocs_version="0.20.0"
 ARG packer_version="1.14.2"
-ARG mysql_version="8.4.6"
+ARG mysql_version="8.4.7"
 
 ENV TFENV_AUTO_INSTALL="false" \
     AWS_METADATA_SERVICE_NUM_ATTEMPTS="5" \
