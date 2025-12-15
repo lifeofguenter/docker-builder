@@ -63,6 +63,7 @@ RUN set -ex && \
       python3-packaging \
       python3-passlib \
       python3-paramiko \
+      python3-pip \
       python3-resolvelib \
       python3-setuptools \
       python3-yaml \
