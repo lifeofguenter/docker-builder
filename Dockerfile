@@ -66,6 +66,7 @@ RUN set -ex && \
       python3-pip \
       python3-resolvelib \
       python3-setuptools \
+      python3-virtualenv \
       python3-yaml \
       rsync \
       tree \
