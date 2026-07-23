@@ -3,10 +3,10 @@ FROM public.ecr.aws/docker/library/debian:trixie-slim
 ARG TARGETOS
 ARG TARGETARCH
 ARG DEBIAN_FRONTEND="noninteractive"
-ARG tfenv_version="3.0.0"
-ARG tfdocs_version="0.20.0"
-ARG packer_version="1.14.2"
-ARG mysql_version="8.4.7"
+ARG tfenv_version="3.2.2"
+ARG tfdocs_version="0.24.0"
+ARG packer_version="1.15.4"
+ARG mysql_version="8.4.10"
 
 ENV TFENV_AUTO_INSTALL="false" \
     AWS_METADATA_SERVICE_NUM_ATTEMPTS="5" \
@@ -106,9 +106,9 @@ RUN set -ex && \
     wget --no-verbose "https://github.com/tfutils/tfenv/archive/v${tfenv_version}.tar.gz" && \
     tar xf "v${tfenv_version}.tar.gz" && \
     ln -sf "/opt/tfenv-${tfenv_version}/bin/"* /usr/local/bin && \
-    tfenv list-remote | grep '^1\.11\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
-    tfenv list-remote | grep '^1\.12\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
-    tfenv list-remote | grep '^1\.13\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.15\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.14\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.13\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
     wget --no-verbose "https://github.com/terraform-docs/terraform-docs/releases/download/v${tfdocs_version}/terraform-docs-v${tfdocs_version}-${TARGETOS}-${TARGETARCH}.tar.gz" && \
     wget --no-verbose "https://releases.hashicorp.com/packer/${packer_version}/packer_${packer_version}_${TARGETOS}_${TARGETARCH}.zip" && \
     tar xf terraform-docs-*.tar.gz && \
