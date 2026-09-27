@@ -54,6 +54,12 @@ test:
 	@echo -e "\n"
 	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'node --version'
 	@echo -e "\n"
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'php --version'
+	@echo -e "\n"
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'php8.4 --version'
+	@echo -e "\n"
+	docker run --rm --entrypoint bash '$(REPO_NAME)' -c 'php -m | grep -i xdebug'
+	@echo -e "\n"
 
 
 .PHONY: publish
