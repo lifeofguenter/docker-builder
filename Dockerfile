@@ -154,4 +154,22 @@ RUN set -ex && \
     rm -rf /var/lib/apt/lists/*
 
 
+# PHP, from the same installer setup-php itself runs for a self-hosted runner.
+# Without this every CI job downloads a build and apt-installs its dependencies
+# from scratch, because a container job gets a fresh filesystem each time.
+#
+# setup-php keeps its job here: seeded versions are what it switches between.
+# It only installs when /usr/bin/php<version> is missing, so a version listed
+# below is a switch and a version that is not is a one-off install, exactly as
+# before. Note the order - the last version listed becomes the default `php`.
+ARG php_versions="8.4 8.5"
+
+RUN set -ex && \
+    curl -fsSL -o /tmp/php-builder.sh \
+      https://github.com/shivammathur/php-builder/releases/latest/download/install.sh && \
+    for php_version in ${php_versions}; do \
+      bash /tmp/php-builder.sh "$php_version"; \
+    done && \
+    rm -f /tmp/php-builder.sh
+
 COPY known_hosts /root/.ssh/known_hosts
