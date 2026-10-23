@@ -5,8 +5,10 @@ ARG TARGETARCH
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG tfenv_version="3.2.2"
 ARG tfdocs_version="0.24.0"
-ARG packer_version="1.15.4"
-ARG mysql_version="8.4.10"
+ARG packer_version="1.16.2"
+ARG mysql_version="8.4.13"
+ARG b2_version="5.0.2"
+ARG terratalk_version="0.5.1"
 ARG node_version="24"
 
 ENV TFENV_AUTO_INSTALL="false" \
@@ -101,11 +103,11 @@ RUN set -ex && \
 # Install mysql
 RUN set -ex && \
     wget --no-verbose \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client_${mysql_version}-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client-core_${mysql_version}-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-client_${mysql_version}-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client-plugins_${mysql_version}-1debian12_amd64.deb" \
-      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-common_${mysql_version}-1debian12_amd64.deb" && \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client_${mysql_version}-1debian13_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client-core_${mysql_version}-1debian13_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-client_${mysql_version}-1debian13_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-community-client-plugins_${mysql_version}-1debian13_amd64.deb" \
+      "https://dev.mysql.com/get/Downloads/MySQL-8.4/mysql-common_${mysql_version}-1debian13_amd64.deb" && \
     apt-get -qq update && \
     apt-get install -yqq --no-install-recommends ./*.deb && \
     rm -f ./*.deb && \
@@ -114,8 +116,8 @@ RUN set -ex && \
 
 # Install terratalk
 RUN set -ex && \
-    pipx install --system-site-packages b2 && \
-    pipx install --system-site-packages terratalk
+    pipx install --system-site-packages "b2==${b2_version}" && \
+    pipx install --system-site-packages "terratalk==${terratalk_version}"
 
 # Install terraform via tfenv + packer
 RUN set -ex && \
@@ -123,7 +125,9 @@ RUN set -ex && \
     wget --no-verbose "https://github.com/tfutils/tfenv/archive/v${tfenv_version}.tar.gz" && \
     tar xf "v${tfenv_version}.tar.gz" && \
     ln -sf "/opt/tfenv-${tfenv_version}/bin/"* /usr/local/bin && \
-    tfenv list-remote | grep '^1\.15\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.17\.' | grep -v '\(alpha\|beta\|rc\)' | head -n2 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.16\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
+    tfenv list-remote | grep '^1\.15\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
     tfenv list-remote | grep '^1\.14\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
     tfenv list-remote | grep '^1\.13\.' | grep -v '\(alpha\|beta\|rc\)' | head -n1 | xargs -n1 tfenv install && \
     wget --no-verbose "https://github.com/terraform-docs/terraform-docs/releases/download/v${tfdocs_version}/terraform-docs-v${tfdocs_version}-${TARGETOS}-${TARGETARCH}.tar.gz" && \
