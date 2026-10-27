@@ -42,6 +42,7 @@ RUN set -ex && \
       ansible-lint \
       awscli \
       bash \
+      bzip2 \
       ca-certificates \
       curl \
       git \
@@ -73,6 +74,7 @@ RUN set -ex && \
       tree \
       unzip \
       wget \
+      xorriso \
       xz-utils \
       yamllint \
       zip && \
